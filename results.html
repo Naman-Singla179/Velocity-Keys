@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Velocity Keys // Result</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital@1&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Outfit', sans-serif; background-color: #000000; background-image: radial-gradient(circle at 50% -20%, #2e1065 0%, #000000 60%); color: #fafafa; min-height: 100vh; display: flex; flex-direction: column; }
+    .topBar { display: flex; align-items: center; justify-content: space-between; padding: 0 60px; height: 80px; background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .logoText { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+    .logoText .blueWord { color: #c4b5fd; }
+    .backLink { text-decoration: none; font-size: 0.85rem; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; color: #a1a1aa; transition: 0.3s; }
+    .backLink:hover { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+    .mainContainer { flex: 1; max-width: 900px; margin: 0 auto; width: 100%; padding: 48px 24px 80px; }
+    .links { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #71717a; margin-bottom: 32px; letter-spacing: 0.05em; text-transform: uppercase; }
+    .links a { color: #71717a; text-decoration: none; transition: 0.3s; }
+    .links a:hover { color: #c4b5fd; }
+    .links .here { color: #fafafa; font-weight: 600; }
+    .bigBox { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; padding: 32px 36px; margin-bottom: 24px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .bigBox::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #c4b5fd, transparent); }
+    .topRow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+    .topRow h2 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; color: #ffffff; }
+    .topRow h2 span { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; color: #e9d5ff; }
+    .rightStuff { display: flex; align-items: center; gap: 16px; }
+    .statusPill { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 30px; }
+    .greenPill { background: rgba(110, 231, 183, 0.1); color: #6ee7b7; border: 1px solid rgba(110, 231, 183, 0.2); }
+    .yellowPill { background: rgba(253, 224, 71, 0.1); color: #fde047; border: 1px solid rgba(253, 224, 71, 0.2); }
+    .redPill { background: rgba(253, 164, 175, 0.1); color: #fda4af; border: 1px solid rgba(253, 164, 175, 0.2); }
+    .dateText { font-size: 0.8rem; color: #71717a; font-family: 'JetBrains Mono', monospace; }
+    .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .card { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.03); border-radius: 16px; padding: 24px 20px; position: relative; overflow: hidden; }
+    .card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+    .card1::after { background: #c4b5fd; box-shadow: 0 0 10px #c4b5fd; } 
+    .card2::after { background: #6ee7b7; box-shadow: 0 0 10px #6ee7b7; } 
+    .card3::after { background: #fde047; box-shadow: 0 0 10px #fde047; } 
+    .card4::after { background: #fda4af; box-shadow: 0 0 10px #fda4af; }
+    .smallGreyText { font-size: 0.65rem; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+    .hugeNumber { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
+    .card1 .hugeNumber { color: #e9d5ff; text-shadow: 0 0 20px rgba(196, 181, 253, 0.3); } 
+    .card2 .hugeNumber { color: #a7f3d0; text-shadow: 0 0 20px rgba(110, 231, 183, 0.3); } 
+    .card3 .hugeNumber { color: #fef08a; text-shadow: 0 0 20px rgba(253, 224, 71, 0.3); } 
+    .card4 .hugeNumber { color: #fecdd3; text-shadow: 0 0 20px rgba(253, 164, 175, 0.3); }
+    .tinyWord { font-size: 0.75rem; color: #71717a; font-weight: 300; }
+    .flexBox { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    .whiteBox { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; padding: 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .boxTitle { font-size: 0.75rem; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+    .blueSub { font-size: 0.7rem; font-weight: 800; color: #c4b5fd; text-transform: uppercase; letter-spacing: 0.05em; }
+    .middleArea { display: flex; align-items: center; justify-content: center; padding: 10px 0; }
+    .stats { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+    .statDiv { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 10px; }
+    .statNum { font-size: 1.25rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+    .statText { font-size: 0.8rem; color: #a1a1aa; font-weight: 300; }
+    .bars { display: flex; flex-direction: column; gap: 20px; }
+    .barThing { display: flex; flex-direction: column; gap: 8px; }
+    .barTop { display: flex; justify-content: space-between; font-size: 0.8rem; }
+    .barName { color: #a1a1aa; font-weight: 300; } 
+    .barVal { color: #fafafa; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .bgLine { height: 4px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
+    .colorLine { height: 100%; border-radius: 4px; box-shadow: 0 0 10px currentColor; }
+    .blueLine { background: #c4b5fd; color: #c4b5fd; } 
+    .greenLine { background: #6ee7b7; color: #6ee7b7; } 
+    .orangeLine { background: #fde047; color: #fde047; } 
+    .redLine { background: #fda4af; color: #fda4af; }
+    .bottomBox { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; padding: 32px; margin-bottom: 32px; overflow-x: auto; }
+    .myTable { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .myTable thead tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .myTable th { padding: 12px 16px; text-align: left; font-size: 0.7rem; font-weight: 600; color: #71717a; text-transform: uppercase; letter-spacing: 0.1em; }
+    .myTable td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.02); color: #fafafa; font-weight: 300; }
+    .myTable tbody tr:last-child td { border-bottom: none; }
+    .myTable tbody tr:hover td { background: rgba(255,255,255,0.01); }
+    .thickText { font-weight: 800; font-family: 'JetBrains Mono', monospace; font-size: 1rem; }
+    .fadedText { color: #71717a; }
+    .tag { display: inline-flex; align-items: center; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 30px; }
+    .greenTag { background: rgba(110, 231, 183, 0.1); color: #6ee7b7; border: 1px solid rgba(110, 231, 183, 0.2); }
+    .yellowTag { background: rgba(253, 224, 71, 0.1); color: #fde047; border: 1px solid rgba(253, 224, 71, 0.2); }
+    .redTag { background: rgba(253, 164, 175, 0.1); color: #fda4af; border: 1px solid rgba(253, 164, 175, 0.2); }
+    .greyTag { background: rgba(255,255,255,0.05); color: #a1a1aa; border: 1px solid rgba(255,255,255,0.05); }
+    .btnContainer { display: flex; gap: 16px; flex-wrap: wrap; }
+    .darkBtn { display: inline-flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 16px 40px; border-radius: 50px; border: none; cursor: pointer; background: #ffffff; color: #000000; text-decoration: none; transition: all 0.3s; box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); }
+    .darkBtn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); }
+    .lightBtn { display: inline-flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 16px 32px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer; background: rgba(255, 255, 255, 0.02); color: #fafafa; text-decoration: none; transition: 0.3s; }
+    .lightBtn:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); }
+  </style>
+</head>
+<body>
+  <nav class="topBar">
+    <div class="logoText">Velocity<span class="blueWord">Keys</span></div>
+    <a href="levels.html" class="backLink">Return</a>
+  </nav>
+
+  <div class="mainContainer">
+    <div class="links">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <a href="levels.html">Levels</a>
+      <span>/</span>
+      <span class="here">Report</span>
+    </div>
+    
+    <div class="bigBox">
+      <div class="topRow">
+        <h2>Session <span>Diagnostics</span></h2>
+        <div class="rightStuff">
+          <span class="statusPill yellowPill" id="lvl">Medium</span>
+          <span class="dateText" id="date">—</span>
+        </div>
+      </div>
+      
+      <div class="grid4">
+        <div class="card card1">
+          <div class="smallGreyText">Velocity</div>
+          <div class="hugeNumber" id="wpm">—</div>
+          <div class="tinyWord">WPM</div>
+        </div>
+        <div class="card card2">
+          <div class="smallGreyText">Precision</div>
+          <div class="hugeNumber" id="acc">—</div>
+          <div class="tinyWord">%</div>
+        </div>
+        <div class="card card3">
+          <div class="smallGreyText">Valid Strings</div>
+          <div class="hugeNumber" id="corr">—</div>
+          <div class="tinyWord">WORDS</div>
+        </div>
+        <div class="card card4">
+          <div class="smallGreyText">Anomalies</div>
+          <div class="hugeNumber" id="err">—</div>
+          <div class="tinyWord">ERRORS</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="flexBox">
+      <div class="whiteBox">
+        <div class="boxTitle">
+          Precision Matrix
+          <span class="blueSub">Current Run</span>
+        </div>
+        <div class="middleArea">
+          <div class="stats">
+            <div class="statDiv">
+              <span class="statText">Valid Entities</span>
+              <span class="statNum" id="num1" style="color: #6ee7b7;">—</span>
+            </div>
+            <div class="statDiv">
+              <span class="statText">Anomalies</span>
+              <span class="statNum" id="num2" style="color: #fda4af;">—</span>
+            </div>
+            <div class="statDiv" style="border: none;">
+              <span class="statText">Net Velocity</span>
+              <span class="statNum" id="num3" style="color: #e9d5ff;">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="whiteBox">
+        <div class="boxTitle">Telemetry Bars</div>
+        <div class="bars">
+          <div class="barThing">
+            <div class="barTop">
+              <span class="barName">Velocity</span>
+              <span class="barVal" id="val1">—</span>
+            </div>
+            <div class="bgLine">
+              <div class="colorLine blueLine" id="line1" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="barThing">
+            <div class="barTop">
+              <span class="barName">Precision</span>
+              <span class="barVal" id="val2">—</span>
+            </div>
+            <div class="bgLine">
+              <div class="colorLine greenLine" id="line2" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="barThing">
+            <div class="barTop">
+              <span class="barName">Valid Strings</span>
+              <span class="barVal" id="val3">—</span>
+            </div>
+            <div class="bgLine">
+              <div class="colorLine orangeLine" id="line3" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="barThing">
+            <div class="barTop">
+              <span class="barName">Anomalies</span>
+              <span class="barVal" id="val4">—</span>
+            </div>
+            <div class="bgLine">
+              <div class="colorLine redLine" id="line4" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bottomBox">
+      <div class="boxTitle">Execution Summary</div>
+      <table class="myTable">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Recorded Data</th>
+            <th>Threshold</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Velocity (WPM)</td>
+            <td class="thickText" id="t1">—</td>
+            <td class="fadedText" id="t2">—</td>
+            <td><span class="tag greyTag" id="t3">—</span></td>
+          </tr>
+          <tr>
+            <td>Precision</td>
+            <td class="thickText" id="t4">—</td>
+            <td class="fadedText">> 90.0%</td>
+            <td><span class="tag greyTag" id="t5">—</span></td>
+          </tr>
+          <tr>
+            <td>Valid Entities</td>
+            <td class="thickText" id="t6">—</td>
+            <td class="fadedText">N/A</td>
+            <td><span class="tag greyTag">—</span></td>
+          </tr>
+          <tr>
+            <td>Anomalies</td>
+            <td class="thickText" id="t7" style="color: #fda4af;">—</td>
+            <td class="fadedText">0.0</td>
+            <td><span class="tag greyTag" id="t8">—</span></td>
+          </tr>
+          <tr>
+            <td>Protocol Level</td>
+            <td id="t9" class="thickText">—</td>
+            <td class="fadedText">—</td>
+            <td><span class="tag greyTag">—</span></td>
+          </tr>
+          <tr>
+            <td>Time Elapsed</td>
+            <td id="t10" class="thickText">—</td>
+            <td class="fadedText">—</td>
+            <td><span class="tag greyTag">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="btnContainer">
+      <a id="btn1" href="levels.html" class="darkBtn">Restart Test</a>
+      <a href="stats.html" class="lightBtn">View History</a>
+      <a href="index.html" class="lightBtn">Home</a>
+    </div>
+  </div>
+<script>
+    /* ═══════════════════════════════════════════════════════════════
+   VELOCITY KEYS - RESULTS MODULE (FINAL INSTANT)
+════════════════════════════════════════════════════════════════ */
+
+function getSafeStorage(key) {
+  try {
+    var data = localStorage.getItem(key);
+    var parsed = data ? JSON.parse(data) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.warn("Memory reset for " + key);
+    return []; 
+  }
+}
+
+function saveToHistory(resultData) {
+  var history = getSafeStorage('velocity-history');
+  history.push(resultData);
+  if (history.length > 20) history = history.slice(-20);
+  localStorage.setItem('velocity-history', JSON.stringify(history));
+}
+
+function updateLeaderboard(resultData) {
+  var leaderboard = getSafeStorage('velocity-leaderboard');
+  leaderboard.push(resultData);
+  leaderboard.sort(function(a, b) { return b.wpm - a.wpm; });
+  if (leaderboard.length > 10) leaderboard = leaderboard.slice(0, 10);
+  localStorage.setItem('velocity-leaderboard', JSON.stringify(leaderboard));
+}
+
+function setNumberInstant(id, value) {
+  var obj = document.getElementById(id);
+  if (obj) obj.textContent = value;
+}
+
+function setBarsInstant(wpm, acc, correct, errors) {
+  document.getElementById("line1").style.width = Math.min(wpm, 100) + "%";
+  document.getElementById("line2").style.width = acc + "%";
+  document.getElementById("line3").style.width = (correct > 0 ? Math.min(correct * 5, 100) : 0) + "%";
+  document.getElementById("line4").style.width = (errors > 0 ? Math.min(errors * 10, 100) : 0) + "%";
+}
+
+function init() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var wpm = parseInt(urlParams.get("wpm")) || 0;
+  var acc = parseInt(urlParams.get("acc")) || 0;
+  var correct = parseInt(urlParams.get("correct")) || 0;
+  var errors = parseInt(urlParams.get("errors")) || 0;
+  var level = urlParams.get("level") || "medium";
+  var actualTime = parseFloat(urlParams.get("time")) || 0;
+  var timeLimit = parseInt(urlParams.get("limit")) || 45;
+
+  var resultData = {
+    wpm: wpm, acc: acc, correct: correct, errors: errors, level: level,
+    actualTime: actualTime, timeLimit: timeLimit,
+    date: new Date().toISOString(), timestamp: Date.now()
+  };
+  saveToHistory(resultData);
+  updateLeaderboard(resultData);
+
+  var now = new Date();
+  document.getElementById("date").textContent = now.toLocaleDateString("en-GB") + " " + now.toLocaleTimeString();
+  document.getElementById("lvl").textContent = level.charAt(0).toUpperCase() + level.slice(1);
+  
+  var pills = { easy: "greenPill", medium: "yellowPill", hard: "redPill" };
+  document.getElementById("lvl").className = "statusPill " + (pills[level] || "yellowPill");
+
+  // Load numbers instantly
+  setNumberInstant("wpm", wpm);
+  setNumberInstant("acc", acc);
+  setNumberInstant("corr", correct);
+  setNumberInstant("err", errors);
+
+  document.getElementById("num1").textContent = correct;
+  document.getElementById("num2").textContent = errors;
+  document.getElementById("num3").textContent = wpm + " WPM";
+  document.getElementById("val1").textContent = wpm + " WPM";
+  document.getElementById("val2").textContent = acc + "%";
+  document.getElementById("val3").textContent = correct + " words";
+  document.getElementById("val4").textContent = errors;
+
+  // Load bars instantly
+  setBarsInstant(wpm, acc, correct, errors);
+
+  var benchmark = { easy: 30, medium: 50, hard: 70 }[level] || 50;
+  document.getElementById("t1").textContent = wpm + " WPM";
+  document.getElementById("t2").textContent = "> " + benchmark + " WPM";
+  
+  var t3 = document.getElementById("t3");
+  t3.textContent = wpm >= benchmark ? "✓ OPTIMAL" : "SUB-PAR";
+  t3.className = "tag " + (wpm >= benchmark ? "greenTag" : "yellowTag");
+
+  document.getElementById("t4").textContent = acc + "%";
+  var t5 = document.getElementById("t5");
+  t5.textContent = acc >= 90 ? "✓ EXCELLENT" : (acc >= 75 ? "ACCEPTABLE" : "CRITICAL");
+  t5.className = "tag " + (acc >= 90 ? "greenTag" : (acc >= 75 ? "yellowTag" : "redTag"));
+
+  document.getElementById("t6").textContent = correct + " words";
+  document.getElementById("t7").textContent = errors;
+  var t8 = document.getElementById("t8");
+  t8.textContent = errors === 0 ? "✓ PERFECT" : (errors <= 3 ? "MINOR" : "MAJOR");
+  t8.className = "tag " + (errors === 0 ? "greenTag" : (errors <= 3 ? "yellowTag" : "redTag"));
+
+  document.getElementById("t9").textContent = level.charAt(0).toUpperCase() + level.slice(1);
+  document.getElementById("t10").textContent = actualTime + "s / " + timeLimit + "s";
+  document.getElementById("btn1").href = "test.html?level=" + level;
+}
+
+window.onload = init;
+  </script>
+</body>
+</html>
