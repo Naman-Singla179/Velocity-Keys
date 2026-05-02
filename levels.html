@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Velocity Keys // Select Level</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <style>
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+
+    body { 
+      font-family: 'Outfit', sans-serif; 
+      background-color: #000000;
+      background-image: radial-gradient(circle at 50% -20%, #2e1065 0%, #000000 60%);
+      color: #fafafa; 
+      min-height: 100vh; 
+      display: flex; 
+      flex-direction: column; 
+    }
+
+    .topNav { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding: 0 60px; 
+      height: 80px; 
+      background: rgba(0, 0, 0, 0.1); 
+      backdrop-filter: blur(20px); 
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+      z-index: 10;
+    }
+
+    .logoText { 
+      font-size: 1.25rem; 
+      font-weight: 800; 
+      letter-spacing: -0.02em; 
+      color: #fafafa; 
+    }
+
+    .logoText .blueLetters { 
+      color: #c4b5fd; 
+    }
+
+    .backBtn { 
+      text-decoration: none; 
+      font-size: 0.85rem; 
+      font-weight: 400; 
+      letter-spacing: 0.05em; 
+      text-transform: uppercase;
+      color: #a1a1aa; 
+      transition: all 0.3s ease; 
+    }
+
+    .backBtn:hover { 
+      color: #ffffff; 
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
+    }
+
+    .mainDiv { 
+      flex: 1; 
+      max-width: 960px; 
+      margin: 0 auto; 
+      width: 100%; 
+      padding: 56px 24px 80px; 
+      position: relative; 
+    }
+
+    .topLinks { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      font-size: 0.78rem; 
+      color: #71717a; 
+      margin-bottom: 32px; 
+      letter-spacing: 0.05em; 
+      text-transform: uppercase; 
+    }
+
+    .topLinks a { 
+      color: #71717a; 
+      text-decoration: none; 
+      transition: 0.3s; 
+    }
+
+    .topLinks a:hover { 
+      color: #c4b5fd; 
+    }
+
+    .topLinks .boldText { 
+      color: #fafafa; 
+      font-weight: 600; 
+    }
+
+    .titleArea { 
+      margin-bottom: 56px; 
+      text-align: center; 
+    }
+
+    .titleArea h1 { 
+      font-size: 3.5rem; 
+      font-weight: 800; 
+      letter-spacing: -0.03em; 
+      color: #ffffff; 
+      margin-bottom: 12px; 
+    }
+
+    .titleArea h1 span { 
+      font-family: 'Playfair Display', serif; 
+      font-style: italic; 
+      font-weight: 400; 
+      color: #e9d5ff; 
+    }
+
+    .titleArea p { 
+      font-size: 1.1rem; 
+      color: #a1a1aa; 
+      font-weight: 300; 
+    }
+    
+    .grid3 { 
+      display: grid; 
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 24px; 
+    }
+    
+    .cardBox {
+      background: rgba(255, 255, 255, 0.02); 
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.05); 
+      border-radius: 24px; 
+      padding: 32px 28px;
+      text-decoration: none; 
+      color: #fafafa; 
+      display: flex; 
+      flex-direction: column;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+      position: relative; 
+      overflow: hidden;
+    }
+
+    .cardBox::before { 
+      content: ''; 
+      position: absolute; 
+      left: 0; 
+      top: 0; 
+      bottom: 0; 
+      width: 4px; 
+      opacity: 0; 
+      transition: opacity 0.4s; 
+    }
+
+    .cardBox:hover { 
+      transform: translateY(-8px); 
+      background: rgba(255, 255, 255, 0.04); 
+    }
+    
+    .greenBox { 
+      --main-color: #6ee7b7; 
+      box-shadow: 0 10px 30px rgba(110, 231, 183, 0.0); 
+    } 
+
+    .greenBox::before { 
+      background: var(--main-color); 
+      box-shadow: 0 0 15px var(--main-color); 
+    } 
+
+    .greenBox:hover { 
+      border-color: rgba(110, 231, 183, 0.3); 
+      box-shadow: 0 10px 40px rgba(110, 231, 183, 0.1); 
+    }
+    
+    .yellowBox { 
+      --main-color: #fde047; 
+      box-shadow: 0 10px 30px rgba(253, 224, 71, 0.0); 
+    } 
+
+    .yellowBox::before { 
+      background: var(--main-color); 
+      box-shadow: 0 0 15px var(--main-color); 
+    } 
+
+    .yellowBox:hover { 
+      border-color: rgba(253, 224, 71, 0.3); 
+      box-shadow: 0 10px 40px rgba(253, 224, 71, 0.1); 
+    }
+    
+    .redBox { 
+      --main-color: #fda4af; 
+      box-shadow: 0 10px 30px rgba(253, 164, 175, 0.0); 
+    } 
+
+    .redBox::before { 
+      background: var(--main-color); 
+      box-shadow: 0 0 15px var(--main-color); 
+    } 
+
+    .redBox:hover { 
+      border-color: rgba(253, 164, 175, 0.3); 
+      box-shadow: 0 10px 40px rgba(253, 164, 175, 0.1); 
+    }
+    
+    .cardBox:hover::before { 
+      opacity: 1; 
+    }
+
+    .cardTop { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      margin-bottom: 24px; 
+    }
+
+    .iconThing { 
+      width: 48px; 
+      height: 48px; 
+      border-radius: 50%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-size: 1.3rem; 
+      background: rgba(255, 255, 255, 0.03); 
+      border: 1px solid rgba(255, 255, 255, 0.05); 
+    }
+
+    .smallPill { 
+      font-size: 0.65rem; 
+      font-weight: 800; 
+      letter-spacing: 0.1em; 
+      text-transform: uppercase; 
+      padding: 6px 14px; 
+      border-radius: 30px; 
+    }
+    
+    .greenBox .smallPill { 
+      color: #6ee7b7; 
+      background: rgba(110, 231, 183, 0.1); 
+      border: 1px solid rgba(110, 231, 183, 0.2); 
+    }
+
+    .yellowBox .smallPill { 
+      color: #fde047; 
+      background: rgba(253, 224, 71, 0.1); 
+      border: 1px solid rgba(253, 224, 71, 0.2); 
+    }
+
+    .redBox .smallPill { 
+      color: #fda4af; 
+      background: rgba(253, 164, 175, 0.1); 
+      border: 1px solid rgba(253, 164, 175, 0.2); 
+    }
+    
+    .boxHeading { 
+      font-size: 1.5rem; 
+      font-weight: 600; 
+      letter-spacing: -0.02em; 
+      margin-bottom: 8px; 
+    }
+
+    .boxDesc { 
+      font-size: 0.9rem; 
+      font-weight: 300; 
+      color: #a1a1aa; 
+      line-height: 1.6; 
+      margin-bottom: 28px; 
+      flex: 1; 
+    }
+
+    .divider { 
+      height: 1px; 
+      background: rgba(255, 255, 255, 0.05); 
+      margin-bottom: 24px; 
+    }
+    
+    .barArea { 
+      margin-bottom: 28px; 
+    }
+
+    .barWords { 
+      display: flex; 
+      justify-content: space-between; 
+      font-size: 0.75rem; 
+      font-weight: 300; 
+      color: #71717a; 
+      margin-bottom: 8px; 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em; 
+    }
+
+    .greyBar { 
+      height: 4px; 
+      background: rgba(255, 255, 255, 0.05); 
+      border-radius: 4px; 
+      overflow: hidden; 
+    }
+
+    .colorBar { 
+      height: 100%; 
+      border-radius: 4px; 
+      box-shadow: 0 0 10px currentColor; 
+    }
+
+    .greenBox .colorBar { 
+      background: #6ee7b7; 
+      color: #6ee7b7; 
+    } 
+
+    .yellowBox .colorBar { 
+      background: #fde047; 
+      color: #fde047; 
+    } 
+
+    .redBox .colorBar { 
+      background: #fda4af; 
+      color: #fda4af; 
+    }
+    
+    .statsList { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      margin-bottom: 32px; 
+    }
+
+    .statRow { 
+      display: flex; 
+      justify-content: space-between; 
+      font-size: 0.85rem; 
+    }
+
+    .leftWord { 
+      color: #71717a; 
+      font-weight: 300; 
+    } 
+
+    .rightWord { 
+      font-weight: 600; 
+      color: #fafafa; 
+    }
+    
+    .bottomBtn { 
+      width: 100%; 
+      padding: 16px; 
+      border: none; 
+      border-radius: 50px; 
+      font-size: 0.85rem; 
+      font-weight: 800; 
+      letter-spacing: 0.05em; 
+      text-transform: uppercase;
+      cursor: pointer; 
+      text-align: center; 
+      transition: all 0.3s; 
+      display: block; 
+      text-decoration: none; 
+      color: #000;
+    }
+
+    .bottomBtn:hover { 
+      transform: scale(1.03); 
+    }
+
+    .greenBox .bottomBtn { 
+      background: #6ee7b7; 
+      box-shadow: 0 0 20px rgba(110, 231, 183, 0.2); 
+    } 
+
+    .yellowBox .bottomBtn { 
+      background: #fde047; 
+      box-shadow: 0 0 20px rgba(253, 224, 71, 0.2); 
+    } 
+
+    .redBox .bottomBtn { 
+      background: #fda4af; 
+      box-shadow: 0 0 20px rgba(253, 164, 175, 0.2); 
+    }
+  </style>
+</head>
+<body>
+  <nav class="topNav">
+    <div class="logoText">Velocity<span class="blueLetters">Keys</span></div>
+    <a href="index.html" class="backBtn">← Return</a>
+  </nav>
+
+  <div class="mainDiv">
+    <div class="topLinks">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <span class="boldText">Levels</span>
+    </div>
+
+    <div class="titleArea">
+      <h1>Choose your <span>difficulty</span></h1>
+      <p>Select a protocol to initiate the typing test sequence.</p>
+    </div>
+
+    <div class="grid3">
+      <!-- EASY CARD -->
+      <a href="test.html?level=easy" class="cardBox greenBox">
+        <div class="cardTop">
+          <div class="iconThing">🟢</div>
+          <span class="smallPill">Easy</span>
+        </div>
+        <h2 class="boxHeading">Easy</h2>
+        <p class="boxDesc">Short common words at a relaxed pace. Great for beginners building confidence.</p>
+        <div class="divider"></div>
+        <div class="barArea">
+          <div class="barWords">
+            <span>Intensity</span>
+            <span>Low</span>
+          </div>
+          <div class="greyBar">
+            <div class="colorBar" style="width: 25%;"></div>
+          </div>
+        </div>
+        <div class="statsList">
+          <div class="statRow">
+            <span class="leftWord">Time limit</span>
+            <span class="rightWord">60s</span>
+          </div>
+          <div class="statRow">
+            <span class="leftWord">Target WPM</span>
+            <span class="rightWord">30+</span>
+          </div>
+        </div>
+        <div class="bottomBtn">Initiate →</div>
+      </a>
+
+      <!-- MEDIUM CARD -->
+      <a href="test.html?level=medium" class="cardBox yellowBox">
+        <div class="cardTop">
+          <div class="iconThing">🟡</div>
+          <span class="smallPill">Medium</span>
+        </div>
+        <h2 class="boxHeading">Medium</h2>
+        <p class="boxDesc">Mixed-length words that test your consistency, rhythm and focus under pressure.</p>
+        <div class="divider"></div>
+        <div class="barArea">
+          <div class="barWords">
+            <span>Intensity</span>
+            <span>Mid</span>
+          </div>
+          <div class="greyBar">
+            <div class="colorBar" style="width: 55%;"></div>
+          </div>
+        </div>
+        <div class="statsList">
+          <div class="statRow">
+            <span class="leftWord">Time limit</span>
+            <span class="rightWord">45s</span>
+          </div>
+          <div class="statRow">
+            <span class="leftWord">Target WPM</span>
+            <span class="rightWord">50+</span>
+          </div>
+        </div>
+        <div class="bottomBtn">Initiate →</div>
+      </a>
+
+      <!-- HARD CARD -->
+      <a href="test.html?level=hard" class="cardBox redBox">
+        <div class="cardTop">
+          <div class="iconThing">🔴</div>
+          <span class="smallPill">Hard</span>
+        </div>
+        <h2 class="boxHeading">Hard</h2>
+        <p class="boxDesc">Long, complex vocabulary and tight timing. A true challenge for fast typists.</p>
+        <div class="divider"></div>
+        <div class="barArea">
+          <div class="barWords">
+            <span>Intensity</span>
+            <span>High</span>
+          </div>
+          <div class="greyBar">
+            <div class="colorBar" style="width: 90%;"></div>
+          </div>
+        </div>
+        <div class="statsList">
+          <div class="statRow">
+            <span class="leftWord">Time limit</span>
+            <span class="rightWord">30s</span>
+          </div>
+          <div class="statRow">
+            <span class="leftWord">Target WPM</span>
+            <span class="rightWord">70+</span>
+          </div>
+        </div>
+        <div class="bottomBtn">Initiate →</div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
