@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Velocity Keys // History & Stats</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital@1&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #000000;
+            background-image: radial-gradient(circle at 50% -20%, #2e1065 0%, #000000 60%);
+            color: #fafafa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topBar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logoText {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .logoText .blueWord {
+            color: #c4b5fd;
+        }
+
+        .backLink {
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #a1a1aa;
+            transition: 0.3s;
+        }
+
+        .backLink:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .mainContainer {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 48px 24px 80px;
+        }
+
+        .pageTitle {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #ffffff, #c4b5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pageSubtitle {
+            font-size: 1.1rem;
+            color: #a1a1aa;
+            margin-bottom: 48px;
+        }
+
+        .statCards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .statCard {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .statCard::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .statCard:nth-child(1)::after {
+            background: #c4b5fd;
+            box-shadow: 0 0 10px #c4b5fd;
+        }
+
+        .statCard:nth-child(2)::after {
+            background: #6ee7b7;
+            box-shadow: 0 0 10px #6ee7b7;
+        }
+
+        .statCard:nth-child(3)::after {
+            background: #fde047;
+            box-shadow: 0 0 10px #fde047;
+        }
+
+        .statCard:nth-child(4)::after {
+            background: #fda4af;
+            box-shadow: 0 0 10px #fda4af;
+        }
+
+        .statLabel {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #71717a;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .statValue {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 4px;
+        }
+
+        .statCard:nth-child(1) .statValue {
+            color: #e9d5ff;
+        }
+
+        .statCard:nth-child(2) .statValue {
+            color: #a7f3d0;
+        }
+
+        .statCard:nth-child(3) .statValue {
+            color: #fef08a;
+        }
+
+        .statCard:nth-child(4) .statValue {
+            color: #fecdd3;
+        }
+
+        .statUnit {
+            font-size: 0.7rem;
+            color: #71717a;
+        }
+
+        .twoCol {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .panelTitle {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        #chartCanvas {
+            max-height: 300px;
+        }
+
+        .leaderboardItem {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.3s;
+        }
+
+        .leaderboardItem:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(4px);
+        }
+
+        .rank {
+            font-size: 1.2rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: #c4b5fd;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .rank.top1 {
+            color: #fde047;
+            text-shadow: 0 0 10px #fde047;
+        }
+
+        .rank.top2 {
+            color: #d4d4d8;
+            text-shadow: 0 0 10px #d4d4d8;
+        }
+
+        .rank.top3 {
+            color: #fb923c;
+            text-shadow: 0 0 10px #fb923c;
+        }
+
+        .leaderboardInfo {
+            flex: 1;
+        }
+
+        .leaderboardWPM {
+            font-size: 1.1rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+        }
+
+        .leaderboardDetails {
+            font-size: 0.75rem;
+            color: #71717a;
+            margin-top: 2px;
+        }
+
+        .levelBadge {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .badge-easy {
+            background: rgba(110, 231, 183, 0.1);
+            color: #6ee7b7;
+            border: 1px solid rgba(110, 231, 183, 0.2);
+        }
+
+        .badge-medium {
+            background: rgba(253, 224, 71, 0.1);
+            color: #fde047;
+            border: 1px solid rgba(253, 224, 71, 0.2);
+        }
+
+        .badge-hard {
+            background: rgba(253, 164, 175, 0.1);
+            color: #fda4af;
+            border: 1px solid rgba(253, 164, 175, 0.2);
+        }
+
+        .historyPanel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .historyTable {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .historyTable thead tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .historyTable th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #71717a;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .historyTable td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            color: #fafafa;
+        }
+
+        .historyTable tbody tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .clearBtn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 50px;
+            border: 1px solid rgba(253, 164, 175, 0.3);
+            background: rgba(253, 164, 175, 0.1);
+            color: #fda4af;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .clearBtn:hover {
+            background: rgba(253, 164, 175, 0.2);
+            border-color: rgba(253, 164, 175, 0.5);
+        }
+
+        .emptyState {
+            text-align: center;
+            padding: 60px 24px;
+            color: #71717a;
+        }
+
+        .emptyState h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: #a1a1aa;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="topBar">
+        <div class="logoText">Velocity<span class="blueWord">Keys</span></div>
+        <a href="index.html" class="backLink">← Home</a>
+    </nav>
+
+    <div class="mainContainer">
+        <h1 class="pageTitle">Performance Analytics</h1>
+        <p class="pageSubtitle">Track your progress, review history, and compete on the leaderboard</p>
+
+        <!-- STAT CARDS -->
+        <div class="statCards">
+            <div class="statCard">
+                <div class="statLabel">Total Tests</div>
+                <div class="statValue" id="totalTests">0</div>
+                <div class="statUnit">attempts</div>
+            </div>
+            <div class="statCard">
+                <div class="statLabel">Average WPM</div>
+                <div class="statValue" id="avgWPM">0</div>
+                <div class="statUnit">WPM</div>
+            </div>
+            <div class="statCard">
+                <div class="statLabel">Best WPM</div>
+                <div class="statValue" id="bestWPM">0</div>
+                <div class="statUnit">WPM</div>
+            </div>
+            <div class="statCard">
+                <div class="statLabel">Avg Accuracy</div>
+                <div class="statValue" id="avgAcc">0</div>
+                <div class="statUnit">%</div>
+            </div>
+        </div>
+
+        <!-- GRAPH & LEADERBOARD -->
+        <div class="twoCol">
+            <div class="panel">
+                <div class="panelTitle">📈 WPM Progress Over Time</div>
+                <canvas id="chartCanvas"></canvas>
+            </div>
+
+            <div class="panel">
+                <div class="panelTitle">🏆 Leaderboard (Top 10)</div>
+                <div id="leaderboardList"></div>
+            </div>
+        </div>
+
+        <!-- HISTORY TABLE -->
+        <div class="historyPanel">
+            <div class="panelTitle" style="display: flex; justify-content: space-between; align-items: center;">
+                <span>📜 Recent Test History</span>
+                <button class="clearBtn" onclick="clearHistory()">🗑️ Clear All Data</button>
+            </div>
+            <div id="historyTableContainer"></div>
+        </div>
+    </div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   VELOCITY KEYS - HISTORY MODULE (FINAL INSTANT)
+════════════════════════════════════════════════════════════════ */
+
+var testHistory = [];
+var leaderboard = [];
+
+function getSafeStorage(key) {
+  try {
+    var data = localStorage.getItem(key);
+    var parsed = data ? JSON.parse(data) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.warn("Memory reset for " + key);
+    return [];
+  }
+}
+
+function loadData() {
+  testHistory = getSafeStorage('velocity-history');
+  leaderboard = getSafeStorage('velocity-leaderboard');
+}
+
+function calculateStats() {
+  if (testHistory.length === 0) return;
+  var totalWPM = 0, bestWPM = 0, totalAcc = 0;
+
+  for (var i = 0; i < testHistory.length; i++) {
+    totalWPM += testHistory[i].wpm;
+    totalAcc += testHistory[i].acc;
+    if (testHistory[i].wpm > bestWPM) bestWPM = testHistory[i].wpm;
+  }
+
+  document.getElementById('totalTests').textContent = testHistory.length;
+  document.getElementById('avgWPM').textContent = Math.round(totalWPM / testHistory.length);
+  document.getElementById('bestWPM').textContent = bestWPM;
+  document.getElementById('avgAcc').textContent = Math.round(totalAcc / testHistory.length);
+}
+
+function renderChart() {
+  var ctx = document.getElementById('chartCanvas').getContext('2d');
+  if (testHistory.length === 0) {
+    ctx.fillStyle = '#71717a'; ctx.font = '14px Outfit'; ctx.textAlign = 'center';
+    ctx.fillText('No data yet. Take a test to see your progress!', ctx.canvas.width / 2, ctx.canvas.height / 2);
+    return;
+  }
+
+  var labels = [], wpmData = [], accData = [];
+  for (var i = 0; i < testHistory.length; i++) {
+    labels.push('Test ' + (i + 1));
+    wpmData.push(testHistory[i].wpm);
+    accData.push(testHistory[i].acc);
+  }
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'WPM', data: wpmData, borderColor: '#c4b5fd', backgroundColor: 'rgba(196, 181, 253, 0.1)', fill: true },
+        { label: 'Accuracy %', data: accData, borderColor: '#6ee7b7', backgroundColor: 'rgba(110, 231, 183, 0.1)', fill: true }
+      ]
+    },
+    options: {
+      animation: false, // Disables chart animation for instant load
+      responsive: true, 
+      maintainAspectRatio: true,
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#a1a1aa' } },
+        x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#a1a1aa' } }
+      }
+    }
+  });
+}
+
+function renderLeaderboard() {
+  var container = document.getElementById('leaderboardList');
+  if (leaderboard.length === 0) {
+    container.innerHTML = '<div class="emptyState"><h3>No scores yet</h3></div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < leaderboard.length; i++) {
+    var rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+    var rankEmoji = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '#' + (i + 1);
+    html += '<div class="leaderboardItem"><div class="rank ' + rankClass + '">' + rankEmoji + '</div>';
+    html += '<div class="leaderboardInfo"><div class="leaderboardWPM">' + leaderboard[i].wpm + ' WPM</div>';
+    html += '<div class="leaderboardDetails">' + leaderboard[i].acc + '% accuracy</div></div>';
+    html += '<div class="levelBadge badge-' + leaderboard[i].level + '">' + leaderboard[i].level.toUpperCase() + '</div></div>';
+  }
+  container.innerHTML = html;
+}
+
+function renderHistory() {
+  var container = document.getElementById('historyTableContainer');
+  if (testHistory.length === 0) {
+    container.innerHTML = '<div class="emptyState"><h3>No history yet</h3></div>';
+    return;
+  }
+  var html = '<table class="historyTable"><thead><tr><th>#</th><th>Date</th><th>Level</th><th>WPM</th><th>Accuracy</th><th>Time</th></tr></thead><tbody>';
+  for (var i = testHistory.length - 1; i >= 0; i--) {
+    var d = new Date(testHistory[i].date);
+    html += '<tr><td><strong>' + (testHistory.length - i) + '</strong></td>';
+    html += '<td>' + d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) + '</td>';
+    html += '<td><span class="levelBadge badge-' + testHistory[i].level + '">' + testHistory[i].level + '</span></td>';
+    html += '<td><strong>' + testHistory[i].wpm + '</strong></td>';
+    html += '<td>' + testHistory[i].acc + '%</td>';
+    html += '<td>' + testHistory[i].actualTime + 's</td></tr>';
+  }
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+function clearHistory() {
+  if (!confirm('Are you sure you want to clear all data?')) return;
+  localStorage.removeItem('velocity-history');
+  localStorage.removeItem('velocity-leaderboard');
+  location.reload();
+}
+
+function init() {
+  loadData(); calculateStats(); renderChart(); renderLeaderboard(); renderHistory();
+}
+window.onload = init;
+  </script>
+</body>
+
+</html>
